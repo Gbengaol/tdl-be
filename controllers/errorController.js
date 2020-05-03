@@ -94,6 +94,7 @@ module.exports = (err, req, res, next) => {
     sendErrorDev(err, req, res);
   } else if (process.env.NODE_ENV === "production") {
     let error = { ...err };
+    console.log(error);
     error.message = err.message;
 
     // Handling invalid database IDs error

@@ -21,10 +21,10 @@ module.exports = {
       database: process.env.POSTGRES_DATABASE,
     },
     migrations: {
-      directory: __dirname + "/db/migrations",
+      directory: "./db/migrations",
     },
     seeds: {
-      directory: __dirname + "/db/seeds",
+      directory: "./db/seeds",
     },
   },
 };

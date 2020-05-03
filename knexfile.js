@@ -15,4 +15,16 @@ module.exports = {
       directory: "./db/seeds",
     },
   },
+  production: {
+    client: "pg",
+    connection: {
+      database: process.env.POSTGRES_DATABASE,
+    },
+    migrations: {
+      directory: "./db/migrations",
+    },
+    seeds: {
+      directory: "./db/seeds",
+    },
+  },
 };

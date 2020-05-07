@@ -8,7 +8,7 @@ exports.getAllTodos = catchAsync(async (req, res, next) => {
   const { id } = req.user;
   try {
     const { size, page } = req.query;
-    let { search } = req.query;
+    let { search, completed } = req.query;
     search = search ? search : "";
     const count = await knex(tableNames.todos)
       .count("id")
@@ -21,10 +21,12 @@ exports.getAllTodos = catchAsync(async (req, res, next) => {
       .table(tableNames.todos)
       .where({
         user_id: id,
+        status: completed,
       })
       .whereRaw(`LOWER(todo_item) LIKE ?`, `%${search.toLowerCase()}%`)
       .whereNull("deleted_at")
       .limit(size ? Number(size) : 10)
+      .orderBy("created_at", "desc")
       .offset(page ? Number((page - 1) * size) : 0);
     if (todos.length) {
       res.status(200).json({
@@ -65,6 +67,7 @@ exports.getArchivedTodos = catchAsync(async (req, res, next) => {
       .whereRaw(`LOWER(todo_item) LIKE ?`, `%${search.toLowerCase()}%`)
       .whereNotNull("deleted_at")
       .limit(size ? Number(size) : 10)
+      .orderBy("created_at", "desc")
       .offset(page ? Number((page - 1) * size) : 0);
     if (todos.length) {
       res.status(200).json({
